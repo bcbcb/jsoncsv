@@ -27,43 +27,12 @@ describe('validation', function () {
     assert.equal(jsontocsv.convert([{},1]), errorMessage);
     done();
   });
-
-  it('should error if the number of properties of each element are not the same', function (done) {
-    var invalid1 = [
-      {
-        "first":"George",
-        "last":"Washington"
-      },
-      {
-        "first":"Bob"
-      }
-    ];
-    assert.equal(jsontocsv.convert(invalid1), errorMessage);
-    done();
-  });
   
-  it('should error if property names of each element are not the same', function (done) {
-    var invalid2 = [
-      {
-        "first":"George",
-        "last":"Washington"
-      },
-      {
-        "first":"Bob",
-        "gender":"male"
-      }
-    ];
-
-    assert.equal(jsontocsv.convert(invalid2), errorMessage);
-    done();
-  });
-
 });
 
 describe('converter', function () {
 
-  it('should return a CSV formatted string for valid JSON', function (done) {
-
+  it('should return 1 row for 1 element', function (done) {
     var json1 = [
       {
         "first":"Brenard",
@@ -73,7 +42,10 @@ describe('converter', function () {
     ];
     var csv1 = 'first,last,gender\nBrenard,Cubacub,male';
     assert.equal(jsontocsv.convert(json1), csv1);
+    done();
+  });
 
+  it('should transform JSON with all matching fields', function (done) {
     var json2 = [
       {
         "name": "Adam",
@@ -99,7 +71,38 @@ describe('converter', function () {
       '\nGeorge,Washington,male,USA' +
       '\nMarie,Curie,female,France';
     assert.equal(jsontocsv.convert(json2), csv2);
-    
+    done();
+  });
+
+  it('should insert empty string for undefined values', function (done) {
+    var json3 = [
+      {
+        "first":"George",
+        "last":"Washington",
+        "gender":"male"
+      },
+      {
+        "first":"Bob"
+      }
+    ];
+    var csv3 = 'first,last,gender\nGeorge,Washington,male\nBob,,';
+    assert.equal(jsontocsv.convert(json3), csv3);
+    done();
+  });
+
+  it('should ignore fields not specified in the first row', function (done) {
+    var json4 = [
+      {
+        "first":"George",
+        "last":"Washington"
+      },
+      {
+        "first":"Bob",
+        "gender":"male"
+      }
+    ];
+    var csv4 = 'first,last\nGeorge,Washington\nBob,';
+    assert.equal(jsontocsv.convert(json4), csv4);
     done();
   });
 
@@ -123,7 +126,7 @@ describe('server', function () {
       });
   });
 
-  it('should respond with CSV after posting valid JSON', function (done) {
+  it('should respond with CSV after POSTing valid JSON', function (done) {
     var json2 = [
       {
         "name": "Adam",
@@ -157,7 +160,6 @@ describe('server', function () {
         assert.equal(200, res.statusCode);
         done();
       });
-
   });
 
 });

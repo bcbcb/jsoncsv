@@ -3,10 +3,7 @@ var convert = function (json) {
   var errorMessage = 'Invalid JSON';
 
   // Validate JSON
-  if (!Array.isArray(json)) {
-    return errorMessage;
-  }
-  if (json.length === 0) {
+  if (!Array.isArray(json) || json.length === 0) {
     return errorMessage;
   }
   for (var k = 0; k < json.length; k++) {
@@ -24,10 +21,7 @@ var convert = function (json) {
     // Start new row of data
     csv += '\n';
     for (var j = 0; j < properties.length; j++) {
-      // Error if properties don't match up
-      if (json[i][properties[j]] === undefined) {
-        return errorMessage;
-      } else {
+      if (json[i][properties[j]] !== undefined) {
         csv += json[i][properties[j]];
       }
       // Add comma except for last value of row
