@@ -1,5 +1,11 @@
-var convert = function (json) {
+
+var convert = function (json, cb) {
   var csv = '';
+  var errorMessage = 'Invalid JSON';
+
+  if (!Array.isArray(json)) {
+    return errorMessage;
+  }
 
   // Build first row of CSV
   var properties = Object.keys(json[0]);

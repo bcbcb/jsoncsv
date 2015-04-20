@@ -14,10 +14,10 @@ describe('JSON to CSV', function () {
     describe('validation', function () {
       var errorMessage = "Invalid JSON";
 
-      it('should error if not input is not array', function (done) {
+      it('should error if input is not array', function (done) {
         assert.equal(jsontocsv.convert(123), errorMessage);
         assert.equal(jsontocsv.convert('asdf'), errorMessage);
-        assert.equal(jsontocsv.convert('{}'), errorMessage);
+        assert.equal(jsontocsv.convert({}), errorMessage);
         done();
       });
 
@@ -76,10 +76,10 @@ describe('JSON to CSV', function () {
 
       var json2 = [
         {
-          "name":     "Adam",
+          "name": "Adam",
           "lastName": "Smith",
-          "gender":   "male",
-          "country":  "Scotland"
+          "gender": "male",
+          "country": "Scotland"
         },
         {
           "name": "George",
@@ -117,13 +117,47 @@ describe('JSON to CSV', function () {
       request.post(endpointUrl)
         .set('Content-Type', 'application/json')
         .send('{"test":"testing"}')
-        .end(function (req, res) {
+        .end(function (err, res) {
           assert.equal(200, res.statusCode);
           done();
         });
     });
 
-    xit('should respond with CSV after posting valid JSON', function (done) {
+    it('should respond with CSV after posting valid JSON', function (done) {
+      var json2 = [
+        {
+          "name": "Adam",
+          "lastName": "Smith",
+          "gender": "male",
+          "country": "Scotland"
+        },
+        {
+          "name": "George",
+          "lastName": "Washington",
+          "gender": "male",
+          "country": "USA"
+        },
+        {
+          "name": "Marie",
+          "lastName": "Curie",
+          "gender": "female",
+          "country": "France"
+        }
+      ];
+      var csv2 = 'name,lastName,gender,country' + 
+        '\nAdam,Smith,male,Scotland' +
+        '\nGeorge,Washington,male,USA' +
+        '\nMarie,Curie,female,France';
+
+      request.post(endpointUrl)
+        .send(json2)
+        .set('Content-Type', 'application/json')
+        .end(function (err, res) {
+          assert.equal(csv2, res.text);
+          assert.equal(200, res.statusCode);
+          done();
+        });
+
     });
 
   });
