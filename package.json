@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha tests.js",
     "start": "node server.js"
   },
   "repository": {
@@ -16,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/bcbcb/jsoncsv/issues"
   },
-  "homepage": "https://github.com/bcbcb/jsoncsv"
+  "homepage": "https://github.com/bcbcb/jsoncsv",
+  "dependencies": {
+    "express": "^4.12.3"
+  },
+  "devDependencies": {
+    "superagent": "^1.2.0"
+  }
 }
