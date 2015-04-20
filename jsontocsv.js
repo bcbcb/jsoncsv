@@ -19,6 +19,7 @@ var convert = function (json) {
   var properties = Object.keys(json[0]);
   csv += properties.join(',');
 
+  // Add rows of values separated by commas
   for (var i = 0; i < json.length; i++) {
     // Start new row of data
     csv += '\n';
