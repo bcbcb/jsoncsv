@@ -14,6 +14,18 @@ describe('JSON to CSV', function () {
     describe('validation', function () {
       var errorMessage = "Invalid JSON";
 
+      it('should error if not input is not array', function (done) {
+        assert.equal(jsontocsv.convert(123), errorMessage);
+        assert.equal(jsontocsv.convert('asdf'), errorMessage);
+        assert.equal(jsontocsv.convert('{}'), errorMessage);
+        done();
+      });
+
+      it('should error if array is empty', function (done) {
+        assert.equal(jsontocsv.convert('[]', errorMessage));
+        done();
+      });
+
       it('should error if the number of properties of each element are not the same', function (done) {
         var invalid1 = [
           {
@@ -41,11 +53,14 @@ describe('JSON to CSV', function () {
         ];
 
         assert.equal(jsontocsv.convert(invalid2), errorMessage);
-
         done();
       });
 
     });
+
+  });
+
+  describe('converter', function () {
 
     it('should return a CSV formatted string for valid JSON', function (done) {
 
@@ -56,9 +71,7 @@ describe('JSON to CSV', function () {
           "gender":"male"
         }
       ];
-
       var csv1 = 'first,last,gender\nBrenard,Cubacub,male';
-
       assert.equal(jsontocsv.convert(json1), csv1);
 
       var json2 = [
@@ -81,18 +94,17 @@ describe('JSON to CSV', function () {
           "country": "France"
         }
       ];
-
       var csv2 = 'name,lastName,gender,country' + 
         '\nAdam,Smith,male,Scotland' +
         '\nGeorge,Washington,male,USA' +
         '\nMarie,Curie,female,France';
-
       assert.equal(jsontocsv.convert(json2), csv2);
-
+      
       done();
     });
 
   });
+
 
   describe('server', function () {
     
