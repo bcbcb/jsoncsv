@@ -17,7 +17,7 @@ var convert = function (json) {
 
   // Build first row
   properties = Object.keys(json[0]);
-  csv += properties.join(',');
+  csv += properties.join(delimiter);
 
   // Build the rest of the rows
   for (var i = 0; i < json.length; i++) {
