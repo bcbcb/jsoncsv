@@ -7,6 +7,11 @@ var endpointUrl = serverUrl + '/api/convert';
 
 describe('JSON to CSV', function () {
 
+  before(function (done) {
+    server.start();
+    done();
+  });
+
   describe('API', function () {
 
     it('should return 200 from JSON POST request', function (done) {
@@ -21,13 +26,13 @@ describe('JSON to CSV', function () {
 
   });
 
-  xdescribe('CSV formatting', function () {
+  describe('CSV formatting', function () {
 
     it('should validate that JSON can be transformed into CSV', function (done) {
       assert.equal(false, true);
     }); 
 
-    it('should respond with a CSV formatted string for valid JSON', function (done) {
+    it('should return a CSV formatted string for valid JSON', function (done) {
       assert.equal(false, true);
     });
 
